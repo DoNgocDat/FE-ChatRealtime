@@ -19,6 +19,7 @@ function LoginPage() {
     try {
       const response = await login(form);
       sessionStorage.setItem('accessToken', response.access_token);
+      console.log('Access token:', response.access_token);
       toast.success("Login successful!");
       navigate("/home");
     } catch (error: any) {

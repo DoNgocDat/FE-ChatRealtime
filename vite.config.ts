@@ -9,7 +9,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/auth': 'https://smartchat-fh2a.onrender.com', // Yêu cầu đến /auth sẽ được chuyển tiếp đến localhost:3000
+      '/auth': 'https://smartchat-fh2a.onrender.com', // Yêu cầu đến /auth sẽ được chuyển tiếp đến FE
     },
   },
 });
