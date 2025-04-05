@@ -1,28 +1,42 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import { useState, lazy, Suspense } from "react";
 import { useTheme } from "../../config/theme";
+import { Link } from "react-router-dom";
 
-const handleLogout = () => {
-    sessionStorage.removeItem("accessToken"); // Xóa token
-    window.location.href = "/login"; // Chuyển hướng về trang login
-};
-
-const menuItems = [
-    { id: "profile", label: "Profile Information", icon: <FaIcons.FaUser />, component: lazy(() => import("./profile")) },
-    { id: "account", label: "Account Information", icon: <FaIcons.FaRegUser />, component: lazy(() => import("./account")) },
-    { id: "settings", label: "Settings", icon: <FaIcons.FaCog />, component: lazy(() => import("./settings")) },
-    { id: "logout", label: "Log out", icon: <FaIcons.FaSignOutAlt />, link: "/login", action: handleLogout },
-];
-
+// Định nghĩa kiểu cho ListMenuProps
 interface ListMenuProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
+// Định nghĩa kiểu cho từng item trong menu, có thể có hoặc không có `link` và `action`
+type MenuItem = {
+    id: string;
+    label: string;
+    icon: React.ReactElement;
+    component?: React.LazyExoticComponent<() => JSX.Element | null>;
+    link?: string;
+    action?: () => void;
+};
+
 const ListMenu = ({ isOpen, onClose }: ListMenuProps) => {
-    const [selectedItem, setSelectedItem] = useState<typeof menuItems[0] | null>(null);
+    const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
     const { isDarkMode } = useTheme();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("accessToken");
+        navigate("/login"); // Chuyển hướng đến trang login
+    };
+
+    // Cập nhật kiểu của menuItems với MenuItem
+    const menuItems: MenuItem[] = [
+        { id: "profile", label: "Profile Information", icon: <FaIcons.FaUser />, component: lazy(() => import("./profile")) },
+        { id: "account", label: "Account Information", icon: <FaIcons.FaRegUser />, component: lazy(() => import("./account")) },
+        { id: "settings", label: "Settings", icon: <FaIcons.FaCog />, component: lazy(() => import("./settings")) },
+        { id: "logout", label: "Log out", icon: <FaIcons.FaSignOutAlt />, action: handleLogout },
+    ];
 
     if (!isOpen) return null;
 
