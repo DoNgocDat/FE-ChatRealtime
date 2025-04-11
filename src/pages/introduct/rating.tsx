@@ -106,12 +106,10 @@ const Rating = () => {
 
             {/* Star Distribution */}
             <div className="mb-10 space-y-2">
-                {starDistribution
-                    .map((item, index) => ({
-                        star: 5 - index,
-                        ...starDistribution[4 - index],
-                    }))
-                    .map(({ star, count, percent }) => (
+                {starDistribution.map((item, index) => {
+                    const star = 5 - index;
+                    const percent = item.percent;
+                    return (
                         <div key={star} className="flex items-center gap-4">
                             <div className="w-16 flex items-center gap-1 text-sm text-gray-600">
                                 <span>{star}</span>
@@ -125,7 +123,8 @@ const Rating = () => {
                             </div>
                             <span className="text-sm text-gray-500 w-10 text-right">{percent}%</span>
                         </div>
-                    ))}
+                    );
+                })}
             </div>
 
             {/* Ratings */}
