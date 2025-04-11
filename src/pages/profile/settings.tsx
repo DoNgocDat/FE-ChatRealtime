@@ -1,8 +1,4 @@
-import { useTheme } from "../../config/theme";
-
 const Settings = () => {
-    const { isDarkMode } = useTheme();
-
     return (
         <div
             className={"space-y-5"}
