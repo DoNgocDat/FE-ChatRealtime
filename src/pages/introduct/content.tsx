@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import Img1 from "../../assets/img-1.png";
 import Img2 from "../../assets/img-2.png";
 import Footer from "../../components/layout/footer";
+import Rating from "./rating"
 
 function Content() {
     return (
@@ -9,6 +10,7 @@ function Content() {
 
             <div className="flex flex-col">
                 <div className="mt-20 mb-20 mx-4 sm:mx-10 lg:mx-32 space-y-16">
+
                     {/* Tiêu đề */}
                     <motion.div
                         className="flex justify-center items-center text-center"
@@ -21,6 +23,26 @@ function Content() {
                             Smart Chat - A place to connect people and share everything
                             <span className="inline-block animate-waving origin-hand"> 👋🏻 </span>
                         </span>
+                    </motion.div>
+
+                    {/* Video giới thiệu */}
+                    <motion.div
+                        className="w-full max-w-3xl mx-auto px-4"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                    >
+                        <div className="relative w-full pb-[56.25%]">
+                            <iframe
+                                className="absolute top-0 left-0 w-full h-full rounded-xl shadow-lg"
+                                src="https://www.youtube.com/embed/NSnkb1IAjbE?autoplay=1&mute=1&loop=1&playlist=NSnkb1IAjbE"
+                                title="Welcome to Vietnam"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            />
+                        </div>
                     </motion.div>
 
                     {/* Tính năng chính */}
@@ -82,8 +104,11 @@ function Content() {
                     </motion.div>
                 </div>
 
+                {/* rating */}
+                <Rating />
+
                 {/* Footer */}
-                <Footer/>
+                <Footer />
             </div>
         </div>
     );
