@@ -3,6 +3,7 @@ import * as FaIcons from "react-icons/fa";
 import { useState, lazy, Suspense } from "react";
 import { useTheme } from "../../config/theme";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 // Định nghĩa kiểu cho ListMenuProps
 interface ListMenuProps {
@@ -47,42 +48,52 @@ const ListMenu = ({ isOpen, onClose }: ListMenuProps) => {
     };
 
     return (
-        <div
+        <motion.div
             id="menu-overlay"
-            className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+            className="fixed inset-0 bg-black/30 flex items-center justify-center z-50"
             onClick={handleOverlayClick}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
         >
             <div
-                className={`bg-white shadow-lg flex w-[90%] md:w-[600px] h-[500px] relative rounded-lg transition-transform transform ${isOpen ? "translate-x-0" : "translate-x-full"
-                    } md:translate-x-0`}
+                className={`w-[90%] md:w-[600px] h-[500px] flex rounded-2xl overflow-hidden shadow-xl
+                    ${isDarkMode ? "bg-gray-800 text-white border border-cyan-600" : "bg-white text-cyan-800 border border-cyan-300"}`}
+                onClick={(e) => e.stopPropagation()}
             >
-                {/* Danh sách menu bên trái */}
-                <ul className={`bg-gray-300 p-4 flex flex-col items-center md:items-start w-16 md:w-64 ${isDarkMode ? "text-gray-800" : "text-cyan-800"} rounded-l-lg`}>
+                {/* Left Menu */}
+                <ul className={` space-y-5 w-20 md:w-64 flex flex-col items-center md:items-start py-4 px-2 ${isDarkMode ? "bg-gray-700" : "bg-cyan-50"} transition-all`}>
                     {menuItems.map((item) => (
                         <li
                             key={item.id}
-                            className={`flex flex-col w-full mt-2 mb-2 md:flex-row items-center md:justify-start space-y-2 md:space-y-0 md:space-x-2 px-4 py-2 cursor-pointer hover:bg-gray-400 rounded-lg transition-all ${selectedItem?.id === item.id ? "bg-gray-500 text-white" : ""}`}
+                            className={`w-full flex flex-col md:flex-row items-center md:justify-start gap-2 md:gap-3 px-4 py-2 rounded-xl cursor-pointer transition-all
+                                hover:bg-cyan-100 hover:text-cyan-900
+                                ${selectedItem?.id === item.id ? "bg-cyan-600 text-white" : ""}`}
                             onClick={() => {
                                 if (item.action) {
-                                    item.action(); // Gọi hàm logout nếu có
+                                    item.action();
                                 } else {
                                     setSelectedItem(item);
                                 }
                             }}
                         >
-                            {item.icon}
-                            <span className="hidden md:inline">
-                                {item.link ? <Link to={item.link}>{item.label}</Link> : <span>{item.label}</span>}
+                            <span className="text-xl">{item.icon}</span>
+                            <span className="hidden md:inline text-base font-medium">
+                                {item.link ? <Link to={item.link}>{item.label}</Link> : item.label}
                             </span>
                         </li>
                     ))}
                 </ul>
 
-                {/* Nội dung menu bên phải */}
-                <div className="flex-1 h-full p-4 bg-gray-100 relative rounded-r-lg">
-                    {/* Nút đóng menu */}
-                    <button className="absolute top-2 right-2 text-red-500 hover:text-red-600" onClick={onClose}>
-                        <FaIcons.FaTimesCircle />
+                {/* Right Content Area */}
+                <div className={`flex-1 h-full p-6 relative
+                    ${isDarkMode ? "bg-gray-800 text-white" : "bg-white text-cyan-800"}`}
+                >
+                    {/* Close button */}
+                    <button
+                        className="absolute top-3 right-3 text-red-500 hover:text-red-600 transition-colors"
+                        onClick={onClose}
+                    >
+                        <FaIcons.FaTimesCircle size={20} />
                     </button>
 
                     {selectedItem && selectedItem.component ? (
@@ -90,11 +101,11 @@ const ListMenu = ({ isOpen, onClose }: ListMenuProps) => {
                             <selectedItem.component />
                         </Suspense>
                     ) : (
-                        <p className="text-gray-500">Select an item from the menu.</p>
+                        <p className="text-gray-400">Select an item from the menu.</p>
                     )}
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 

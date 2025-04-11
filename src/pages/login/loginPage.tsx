@@ -19,7 +19,6 @@ function LoginPage() {
     try {
       const response = await login(form);
       sessionStorage.setItem('accessToken', response.access_token);
-      console.log('Access token:', response.access_token);
       toast.success("Login successful!");
       navigate("/home");
     } catch (error: any) {
@@ -28,69 +27,68 @@ function LoginPage() {
   };
 
   return (
-    <div className="w-full h-screen flex items-center justify-center p-4">
-      {/* Nút quay lại ở góc trái trên cùng */}
+    <div className="w-full h-screen flex items-center justify-center bg-gradient-to-br from-cyan-50 to-white p-4">
       <button
         onClick={() => navigate("/")}
-        className="fixed top-4 left-4 flex items-center gap-2 py-2 px-3 rounded-md text-cyan-800 hover:scale-105 bg-color2 text-sm font-medium transition-colors duration-300"
+        className="fixed top-4 left-4 flex items-center gap-2 py-2 px-3 rounded-md text-cyan-800 hover:scale-105 bg-white shadow-sm border border-cyan-200 text-sm font-medium transition"
       >
-        <FaArrowLeft size={14} /> Quay lại
+        <FaArrowLeft size={14} /> Back
       </button>
 
       <motion.div
-        className="w-full max-w-md bg-color2 shadow-[0_0px_15px_0_rgba(59,130,246,0.5)] rounded-md p-6 flex flex-col items-center space-y-6"
+        className="w-full max-w-md bg-white shadow-xl rounded-xl p-8 flex flex-col items-center space-y-6 border border-cyan-100"
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className='text-3xl text-cyan-800 font-semibold'>Login</h2>
-        <hr className="w-full border-t-2 border-gray-300" />
+        <h2 className='text-3xl text-cyan-800 font-bold'>Welcome Back</h2>
+        <p className="text-sm text-gray-500">Please login to continue</p>
 
         <form onSubmit={handleLogin} className='w-full flex flex-col space-y-4'>
-          {/* Username Input */}
           <div className="relative w-full">
-            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
             <input
               placeholder='Username'
               type='text'
               name='username'
               value={form.username}
               onChange={handleChange}
-              className='w-full pl-10 text-cyan-800 border bg-gray-300 h-10 rounded-lg p-2 outline-none'
+              className='w-full pl-10 pr-3 h-11 rounded-lg border border-cyan-300 focus:ring-2 focus:ring-cyan-400 outline-none text-cyan-900 placeholder-cyan-400 transition'
             />
           </div>
 
-          {/* Password Input */}
           <div className="relative w-full">
-            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+            <FaLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-400" />
             <input
               placeholder='Password'
               type='password'
               name='password'
               value={form.password}
               onChange={handleChange}
-              className='w-full pl-10 text-cyan-800 border bg-gray-300 h-10 rounded-lg p-2 outline-none'
+              className='w-full pl-10 pr-3 h-11 rounded-lg border border-cyan-300 focus:ring-2 focus:ring-cyan-400 outline-none text-cyan-900 placeholder-cyan-400 transition'
             />
           </div>
 
-          <span className='text-blue-600 text-sm self-end cursor-pointer'>Forgot your password?</span>
+          <span className='text-sm text-cyan-600 hover:text-cyan-800 self-end cursor-pointer transition'>
+            Forgot your password?
+          </span>
 
           <button
             type="submit"
-            className="relative mt-2 flex cursor-pointer items-center justify-center w-full bg-green-700 text-white py-2 rounded-md border border-green-700 overflow-hidden transition-colors duration-300
-            before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-300 hover:before:scale-x-100
-            hover:text-green-700 hover:border-green-700"
+            className="mt-2 w-full bg-cyan-800 text-white py-2 rounded-lg font-semibold shadow-md hover:bg-cyan-700 transition"
           >
-            <span className="relative z-10">Login</span>
+            Login
           </button>
         </form>
 
-        <p className='text-cyan-800 text-sm'>
-          You don't have an account yet?
-          <Link to="/register" className='text-blue-600'> Register</Link>
+        <p className='text-sm text-gray-600'>
+          Don't have an account?
+          <Link to="/register" className='ml-1 text-cyan-700 hover:underline font-medium'>
+            Register
+          </Link>
         </p>
-      </motion.div >
+      </motion.div>
     </div>
   );
 }

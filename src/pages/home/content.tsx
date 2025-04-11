@@ -120,21 +120,19 @@ function Content() {
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="error-message">{error}</div>;
-
     return user ? (
         <>
-            {/* Phần nội dung trái */}
+            {/* Sidebar */}
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} user={user} users={users} />
 
-            {/* phần nội dung chính (chat section) */}
-            <div className={`flex-grow pt-[75px] h-full lg:ml-[25%] pl-5 pr-5 pb-5 ${isDarkMode ? "bg-gray-600" : "bg-white"}`}>
-
-                <div className="h-[90%] flex flex-col justify-start space-y-3">
-                    {/* Display messages */}
-                    <div className="flex flex-col space-y-2 overflow-y-auto h-[100%]">
+            {/* Main Chat Section */}
+            <div className={`flex-grow pt-[75px] h-full lg:ml-[25%] px-5 pb-2 transition-colors duration-300 ${isDarkMode ? 'bg-gray-900 text-cyan-100' : 'bg-white text-cyan-900'}`}>
+                <div className="h-[90%] flex flex-col space-y-3">
+                    {/* Message Display */}
+                    <div className="flex flex-col space-y-2 overflow-y-auto h-full px-2">
                         {messages.length === 0 ? (
-                            <div className={`text-center ${isDarkMode ? "text-gray-800" : "text-cyan-800"} mt-24`}>
-                                No messages yet, let's start chatting
+                            <div className="text-center text-cyan-800 mt-24 font-medium">
+                                No messages yet, let's start a conversation!
                             </div>
                         ) : (
                             messages.map((msg, index) => (
@@ -142,80 +140,69 @@ function Content() {
                                     key={index}
                                     className={`flex items-start space-x-3 ${msg.user === user?.displayname ? 'justify-end' : 'justify-start'}`}
                                 >
-                                    {/* Nếu là tin nhắn của người khác */}
+                                    {/* Tin nhắn người khác */}
                                     {msg.user !== user?.displayname && (
                                         <div className="flex items-start space-x-2">
-                                            {/* Avatar */}
-                                            <div className="w-10 h-10 rounded-full border-2 border-gray-300 flex-shrink-0">
+                                            <div className="w-10 h-10 rounded-full border-2 border-cyan-300 dark:border-cyan-600">
                                                 <img
                                                     src={Avata}
                                                     alt="Avata"
                                                     className="w-full h-full rounded-full object-cover"
                                                 />
                                             </div>
-
-                                            {/* Phần tên và nội dung tin nhắn */}
                                             <div className="flex flex-col max-w-[70%]">
-                                                {/* Tên người dùng */}
-                                                <span className={`${isDarkMode ? "text-white" : "text-cyan-800"} font-semibold`}>{msg.user}</span>
-
-                                                <div
-                                                    className={`rounded-lg p-2 font-medium text-white mt-1 w-fit max-w-full 
-                                                    ${msg.file?.name.match(/\.(jpeg|jpg|png|gif)$/) ? "" : isDarkMode ? "bg-gray-800" : "bg-blue-500"}`}
-                                                >
+                                                <span className="text-cyan-800 dark:text-cyan-200 font-semibold">{msg.user}</span>
+                                                <div className={`rounded-xl p-3 shadow-md font-medium mt-1 w-fit max-w-full
+                                                    ${msg.file?.name.match(/\.(jpeg|jpg|png|gif)$/) ? '' : isDarkMode ? 'bg-gray-700 text-white' : 'bg-cyan-500 text-white'}`}>
                                                     {msg.file ? (
                                                         <div className="flex flex-col">
-                                                            <p>{msg.message}</p>
+                                                            <p className="text-white dark:text-white">{msg.message}</p>
                                                             {msg.file.name.match(/\.(jpeg|jpg|png|gif)$/) ? (
                                                                 <img
                                                                     src={msg.file.data}
                                                                     alt="Uploaded file"
-                                                                    className="max-w-96 max-h-96 mt-2 rounded-lg object-cover cursor-pointer border border-gray-300"
+                                                                    className="max-w-96 max-h-96 mt-2 rounded-lg object-cover cursor-pointer border border-gray-300 dark:border-gray-600"
                                                                     onClick={() => msg.file && setModalImage(msg.file.data)}
                                                                 />
                                                             ) : (
-                                                                <a href={msg.file.data} download={msg.file.name} className="underline">
+                                                                <a href={msg.file.data} download={msg.file.name} className="underline text-white">
                                                                     {msg.file.name}
                                                                 </a>
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <p>{msg.message}</p>
+                                                        <p className="text-white dark:text-white">{msg.message}</p>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
                                     )}
 
-                                    {/* Nếu là tin nhắn của chính mình */}
+                                    {/* Tin nhắn của mình */}
                                     {msg.user === user?.displayname && (
                                         <div className="flex mr-2 flex-col items-end max-w-[70%]">
-                                            {/* Nội dung tin nhắn */}
-                                            <div
-                                                className={`rounded-lg p-2 font-medium text-white mt-1 w-fit max-w-full 
-                                                    ${msg.file?.name.match(/\.(jpeg|jpg|png|gif)$/) ? "" : isDarkMode ? "bg-gray-800" : "bg-blue-500"}`}
-                                            >
+                                            <div className={`rounded-xl p-3 shadow-md font-medium mt-1 w-fit max-w-full
+                                                ${msg.file?.name.match(/\.(jpeg|jpg|png|gif)$/) ? '' : isDarkMode ? 'bg-cyan-600 text-white' : 'bg-cyan-500 text-white'}`}>
                                                 {msg.file ? (
                                                     <div className="flex flex-col">
-                                                        <p>{msg.message}</p>
+                                                        <p className="text-white dark:text-white">{msg.message}</p>
                                                         {msg.file.name.match(/\.(jpeg|jpg|png|gif)$/) ? (
                                                             <img
                                                                 src={msg.file.data}
                                                                 alt="Uploaded file"
-                                                                className="max-w-96 max-h-96 mt-2 rounded-lg object-cover cursor-pointer border border-gray-300"
+                                                                className="max-w-96 max-h-96 mt-2 rounded-lg object-cover cursor-pointer border border-gray-300 dark:border-gray-600"
                                                                 onClick={() => msg.file && setModalImage(msg.file.data)}
                                                             />
                                                         ) : (
-                                                            <a href={msg.file.data} download={msg.file.name} className="underline">
+                                                            <a href={msg.file.data} download={msg.file.name} className="underline text-white">
                                                                 {msg.file.name}
                                                             </a>
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <p>{msg.message}</p>
+                                                    <p className="text-white dark:text-white">{msg.message}</p>
                                                 )}
                                             </div>
-
                                         </div>
                                     )}
                                 </div>
@@ -230,28 +217,27 @@ function Content() {
                             </div>
                         )}
 
-
                         <div ref={messageEndRef}></div>
 
                         {showEmojiPicker && (
-                            <div className="absolute bottom-16 right-12 bg-white shadow-lg rounded-lg p-4">
+                            <div className="absolute bottom-16 right-12 shadow-lg rounded-lg">
                                 <EmojiPicker onEmojiClick={handleEmojiClick} />
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Vùng chứa ảnh xem trước */}
+                {/* Preview image section */}
                 <div className="relative w-full">
                     {previewImage && (
-                        <div className="absolute bottom-4 left-0 w-24 h-24 bg-gray-200 border rounded-lg flex">
+                        <div className="absolute bottom-4 left-0 w-24 h-24 bg-gray-200 dark:bg-gray-700 border rounded-lg flex">
                             <img
                                 src={previewImage}
                                 alt="preview"
                                 className="w-full h-full object-cover rounded-lg"
                             />
                             <button
-                                className="absolute top-1 right-1 text-red-500 bg-white rounded-full flex items-center justify-center text-sm"
+                                className="absolute top-1 right-1 text-red-500 bg-white dark:bg-gray-900 rounded-full text-sm"
                                 onClick={() => {
                                     setPreviewImage(null);
                                     setSelectedFile(null);
@@ -263,18 +249,19 @@ function Content() {
                     )}
                 </div>
 
-                {/* Message input and send button */}
-                <div className="flex items-center space-x-3 mt-5">
+                {/* Input và nút gửi */}
+                <div className={`flex items-center bottom-5 rounded-xl px-2 py-1 border shadow-md transition-colors duration-300
+                    ${isDarkMode ? 'bg-gray-800 border-gray-600' : 'bg-white border-cyan-300'}`}>
                     <input
                         ref={inputRef}
-                        className={`flex-grow rounded-lg h-[35px] pl-3 pr-3 bg-gray-300 outline-none ${isDarkMode ? "text-gray-600" : "text-cyan-800"}`}
-                        placeholder="Enter messenger"
+                        className={`flex-grow bg-transparent outline-none px-2 h-[40px]
+                            ${isDarkMode ? 'text-cyan-100 placeholder:text-cyan-400' : 'text-cyan-800 placeholder:text-cyan-400'}`}
+                        placeholder="Enter message..."
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                     />
 
-                    {/* Input file ẩn */}
                     <input
                         type="file"
                         ref={fileInputRef}
@@ -283,27 +270,25 @@ function Content() {
                         accept="image/*, application/pdf, .doc, .docx, .xls, .xlsx"
                     />
 
-                    {/* Button Paperclip */}
-                    <button
-                        className={`${isDarkMode ? "bg-gray-700" : "bg-blue-500"} text-white rounded-full p-2 hover:scale-105`}
-                        onClick={() => fileInputRef.current?.click()}
+                    <button className={`px-2 transition-colors duration-200
+                        ${isDarkMode ? 'text-cyan-300 hover:text-cyan-200' : 'text-cyan-500 hover:text-cyan-600'}`} onClick={() => fileInputRef.current?.click()}
                     >
                         <FaIcons.FaPaperclip />
                     </button>
-                    <button
-                        className={`${isDarkMode ? "bg-gray-700" : "bg-blue-500"} text-white rounded-full p-2 hover:scale-105`}
-                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+
+                    <button className={`px-2 transition-colors duration-200
+                        ${isDarkMode ? 'text-cyan-300 hover:text-cyan-200' : 'text-cyan-500 hover:text-cyan-600'}`} onClick={() => setShowEmojiPicker(!showEmojiPicker)}
                     >
                         <FaIcons.FaHeart />
                     </button>
-                    <button
-                        className={`${isDarkMode ? "bg-gray-700" : "bg-blue-500"} text-white rounded-full p-2 hover:scale-105`}
-                        onClick={sendMessage}
+                    <button className={`px-2 transition-colors duration-200
+                        ${isDarkMode ? 'text-cyan-300 hover:text-cyan-200' : 'text-cyan-500 hover:text-cyan-600'}`} onClick={sendMessage}
                     >
                         <FaIcons.FaPaperPlane />
                     </button>
                 </div>
             </div>
+
         </>
     ) : null;
 }
